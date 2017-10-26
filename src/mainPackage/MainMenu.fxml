@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="background" stylesheets="@../stylesheets/main.css" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainPackage.MainMenuController">
+   <children>
+      <JFXButton fx:id="helloWorldBtn" layoutX="232.0" layoutY="180.0" onMouseClicked="#helloWorld" prefHeight="41.0" prefWidth="136.0" styleClass="btn-theme" text="Hello World!" />
+   </children>
+</AnchorPane>
