@@ -30,7 +30,19 @@ public class Main {
         tabla.put(23, "Hola");
         tabla.put(45, "HEYY");
         tabla.put(47, "Pepe");
-
+        tabla.put(100, "Hola");
+        tabla.put(415, "HEYY");
+        tabla.put(457, "Pepe");
+        tabla.put(283, "Hola");
+        tabla.put(475, "HEYY");
+        tabla.put(427, "Pepe");
+        tabla.put(523, "Hola");
+        tabla.put(425, "HEYY");
+        tabla.put(147, "Pepe");
+        tabla.put(233, "Hola");
+        tabla.put(945, "HEYY");
+        tabla.put(487, "Pepe");
+/*
         Set<Integer> keys = tabla.keySet();
         for (Integer i : keys) {
             System.out.println("Key: " + i);
@@ -45,6 +57,7 @@ public class Main {
         for (Map.Entry e : entries) {
             System.out.println(e.toString());
         }
-
+*/
+        System.out.println("Containe: " + tabla.get(23, true));
     }
 }

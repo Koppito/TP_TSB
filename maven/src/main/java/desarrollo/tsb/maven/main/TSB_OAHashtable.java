@@ -50,6 +50,7 @@ public class TSB_OAHashtable<K, V> implements Map<K, V> {
             throw new NullPointerException("Valor a buscar es nulo");
         }
         for (Entry objeto : objetos) {
+            if (objeto == null) continue;
             if (objeto.getValue() == value) {
                 return true;
             }
@@ -62,15 +63,13 @@ public class TSB_OAHashtable<K, V> implements Map<K, V> {
             throw new NullPointerException("Key a buscar es nula");
         }
         V value = null;
-        // La posicion inicial será donde se espera encontrar la key
-        int posicion = hashear(key);
         boolean primeraPasada = false;
-        while (objetos[posicion] != null) {
-            posicion = Math.floorMod(posicion, objetos.length);
-            if (objetos[posicion].getKey() == key) {
-                value = objetos[posicion].getValue();
+        for (int x = Math.floorMod(hashear(key), objetos.length); objetos[x] != null; x++) {
+            x = Math.floorMod(hashear(key), objetos.length);
+            if (objetos[x].getKey().equals(key)) {
+                value = objetos[x].getValue();
             }
-            if (primeraPasada && posicion == hashear(key)) {
+            if (primeraPasada && x == hashear(key)) {
                 break;
             }
             primeraPasada = true;
@@ -78,13 +77,40 @@ public class TSB_OAHashtable<K, V> implements Map<K, V> {
         return value;
     }
 
+    //region BORRAR
+
+    public V get(Object key, boolean log) {
+        if (!log) {
+            return get(key);
+        }
+        if (key == null) {
+            throw new NullPointerException("Key a buscar es nula");
+        }
+        V value = null;
+        System.out.println(key);
+        boolean primeraPasada = false;
+        for (int x = Math.floorMod(hashear(key), objetos.length); objetos[x] != null; x++) {
+            x = Math.floorMod(hashear(key), objetos.length);
+            if (objetos[x].getKey().equals(key)) {
+                value = objetos[x].getValue();
+            }
+            if (primeraPasada && x == hashear(key)) {
+                break;
+            }
+            primeraPasada = true;
+        }
+        return value;
+    }
+
+    //endregion
+
     public V put(K key, V value) {
         if (key == null || value == null) {
             throw new IllegalArgumentException("Error en los argumentos");
         }
         if (containsKey(key)) {
             for (int x = hashear(key); objetos[x] != null; x++) {
-                x = Math.floorMod(x, objetos.length - 1);
+                x = Math.floorMod(x, objetos.length);
                 if (objetos[x].getEstado() == estadoCasillero.cerrado && objetos[x].getKey() == key) {
                     V viejo = objetos[x].getValue();
                     values.remove(viejo);
@@ -96,11 +122,14 @@ public class TSB_OAHashtable<K, V> implements Map<K, V> {
         }
 
         if (count >= objetos.length * LOAD_FACTOR) {
+            System.out.println("Rehash antes: " + objetos.length);
             rehash();
+            System.out.println("Rehash despues: " + objetos.length);
         }
+
         for (int x = hashear(key); ; x++) {
             if (objetos[x] != null && objetos[x].getEstado() != estadoCasillero.cerrado) continue;
-            x = Math.floorMod(x, objetos.length - 1);
+            x = Math.floorMod(x, objetos.length);
             Entry e = new Entry(key, value);
             keys.add(key);
             values.add(value);
@@ -118,7 +147,7 @@ public class TSB_OAHashtable<K, V> implements Map<K, V> {
         }
         if (containsKey(key)) {
             for (int x = hashear(key); objetos[x] != null; x++) {
-                x = Math.floorMod(x, objetos.length - 1);
+                x = Math.floorMod(x, objetos.length);
                 if (objetos[x].getEstado() == estadoCasillero.cerrado && objetos[x].getKey() == key) {
                     V viejo = objetos[x].getValue();
                     values.remove(viejo);
@@ -161,10 +190,18 @@ public class TSB_OAHashtable<K, V> implements Map<K, V> {
 
     public void rehash() {
         Entry[] temp = (Entry[]) Array.newInstance(Entry.class, Utilities.siguientePrimo(objetos.length));
-        for (Entry objeto : objetos) {
-            if (objeto == null || objeto.getEstado() == estadoCasillero.tumba) continue;
-            int hashNuevo = objeto.getKey().hashCode() % temp.length;
-            temp[hashNuevo] = objeto;
+        for (int x = 0; x < objetos.length; x++) {
+            if (objetos[x] == null || objetos[x].getEstado() == estadoCasillero.tumba) continue;
+
+            Entry viejo = objetos[x];
+
+            int hashNuevo = hashear(objetos[x].getKey(), temp.length);
+            temp[hashNuevo] = objetos[x];
+
+            if (viejo.getKey().equals(23)) {
+                System.out.println("Hash viejo: " + hashear(viejo.getKey()));
+                System.out.println("Hash nuevo: " + hashNuevo);
+            }
         }
         objetos = temp;
     }
@@ -176,6 +213,10 @@ public class TSB_OAHashtable<K, V> implements Map<K, V> {
     //Funciones agregadas por nosotros
     private int hashear(Object o) {
         return o.hashCode() % objetos.length;
+    }
+
+    private int hashear(Object o, int number) {
+        return o.hashCode() % number;
     }
 
     //Clase para representar los pares de objetos.
