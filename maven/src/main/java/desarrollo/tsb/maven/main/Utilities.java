@@ -1,4 +1,4 @@
-package desarrollo.tsb.maven;
+package main;
 
 public class Utilities {
 	public static int siguientePrimo(int n) {
