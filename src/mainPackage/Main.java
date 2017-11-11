@@ -12,26 +12,30 @@ import javafx.stage.StageStyle;
  *
  * @author Koppito
  */
-public class Main extends Application {
-    
+public class Main {
+
+    /*
     @Override
     public void start(Stage stage) throws Exception {
-        /*
+        throw new Exception();
+
         Parent root = FXMLLoader.load(getClass().getResource("MainMenu.fxml"));
         stage.initStyle(StageStyle.UNDECORATED);
 
         Scene scene = new Scene(root);
         
         stage.setScene(scene);
-        stage.show();*/
-        throw new Exception();
-    }
+        stage.show();
+    }*/
 
     public static void main(String[] args) {
-        TSB_OAHashtable hashTabla = new TSB_OAHashtable(25);
+        TSB_OAHashtable<Integer, Integer> hashTabla = new TSB_OAHashtable(25);
         System.out.println(hashTabla.size());
-        return;
-        //launch(args);
+        hashTabla.put(2, 3);
+        System.out.println(hashTabla.get(2));
+        System.out.println(hashTabla.put(2, 45));
+        System.out.println(hashTabla.get(2));
+        System.out.println(hashTabla.get(3));
     }
 
 }
