@@ -1,7 +1,10 @@
-package main;
+package desarrollo.tsb.maven.main;
 
 import java.lang.reflect.Array;
 import java.util.*;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 @SuppressWarnings("unchecked")
 public class TSB_OAHashtable<K, V> implements Map<K, V> {
@@ -244,5 +247,65 @@ public class TSB_OAHashtable<K, V> implements Map<K, V> {
             this.estado = estado;
         }
     }
+
+	public V getOrDefault(Object key, V defaultValue) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void forEach(BiConsumer<? super K, ? super V> action) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void replaceAll(
+			BiFunction<? super K, ? super V, ? extends V> function) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public V putIfAbsent(K key, V value) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public boolean remove(Object key, Object value) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean replace(K key, V oldValue, V newValue) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public V replace(K key, V value) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public V computeIfAbsent(K key,
+			Function<? super K, ? extends V> mappingFunction) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public V computeIfPresent(K key,
+			BiFunction<? super K, ? super V, ? extends V> remappingFunction) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public V compute(K key,
+			BiFunction<? super K, ? super V, ? extends V> remappingFunction) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public V merge(K key, V value,
+			BiFunction<? super V, ? super V, ? extends V> remappingFunction) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

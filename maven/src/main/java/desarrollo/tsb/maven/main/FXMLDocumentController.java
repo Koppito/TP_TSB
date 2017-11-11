@@ -1,4 +1,4 @@
-package main;
+package desarrollo.tsb.maven.main;
 
 import java.io.File;
 import java.net.URL;

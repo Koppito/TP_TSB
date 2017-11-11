@@ -1,4 +1,4 @@
-package main;
+package desarrollo.tsb.maven.main;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

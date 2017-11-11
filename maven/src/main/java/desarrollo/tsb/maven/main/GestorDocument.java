@@ -1,4 +1,4 @@
-package main;
+package desarrollo.tsb.maven.main;
 
 /*
 * Esta clase se encarga de tener la instancia de la hashtable y de la serialización del fichero
