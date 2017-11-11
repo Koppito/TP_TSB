@@ -39,7 +39,7 @@ public class FXMLDocumentController implements Initializable {
             lblArchivo.setText(file.getAbsolutePath());
             gestor.getArchivo().setFile(file);
             gestor.getArchivo().leerArchivo();
-            txtArchivo.setText(gestor.getArchivo().toString());
+            txtArchivo.setText("Archivo: " + gestor.getArchivo().toString());
         }
     }
 

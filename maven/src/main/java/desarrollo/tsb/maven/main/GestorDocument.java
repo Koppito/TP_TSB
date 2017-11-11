@@ -1,5 +1,9 @@
 package main;
 
+/*
+* Esta clase se encarga de tener la instancia de la hashtable y de la serialización del fichero
+*/
+
 public class GestorDocument {
 
     //region SINGLETON
@@ -15,7 +19,7 @@ public class GestorDocument {
     private TSB_OAHashtable hashTable;
     private Archivo archivo;
 
-    public void GestorDocument() {
+    public GestorDocument() {
         hashTable = new TSB_OAHashtable(200);
         archivo = new Archivo();
     }

@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Set;
 
 @SuppressWarnings("unchecked")
-public class Main {
+public class Main extends Application {
 
 	//@Override
 	public void start(Stage stage) throws Exception 
@@ -21,12 +21,14 @@ public class Main {
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setTitle("TP TSB");
+        stage.setResizable(false);
         stage.show();
 	}
 	
-	public static void main(String[] args) {
-		//launch(args);
+    public static void main(String[] args) {
+        launch(args);/*
         TSB_OAHashtable tabla = new TSB_OAHashtable<Integer, String>(2);
+        TSB_OAHashtable tabla2 = new TSB_OAHashtable<Integer, String>(2);
         tabla.put(23, "Hola");
         tabla.put(45, "HEYY");
         tabla.put(47, "Pepe");
@@ -42,7 +44,7 @@ public class Main {
         tabla.put(233, "Hola");
         tabla.put(945, "HEYY");
         tabla.put(487, "Pepe");
-/*
+
         Set<Integer> keys = tabla.keySet();
         for (Integer i : keys) {
             System.out.println("Key: " + i);
@@ -57,7 +59,14 @@ public class Main {
         for (Map.Entry e : entries) {
             System.out.println(e.toString());
         }
-*/
-        System.out.println("Containe: " + tabla.get(23, true));
+
+
+        System.out.println(tabla.get(23));
+        System.out.println(tabla.containsKey(23));
+        System.out.println(tabla.remove(23));
+        System.out.println(tabla.containsKey(23));
+
+        tabla2.putAll(tabla);
+        System.out.println("Contiene: " + tabla2.containsKey(45));*/
     }
 }
