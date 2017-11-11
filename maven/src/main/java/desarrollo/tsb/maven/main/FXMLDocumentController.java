@@ -11,7 +11,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 
-
 public class FXMLDocumentController implements Initializable {
 
     private GestorDocument gestor = GestorDocument.getInstance();

@@ -1,5 +1,6 @@
 package main;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 @SuppressWarnings("unchecked")
@@ -22,7 +23,7 @@ public class TSB_OAHashtable<K, V> implements Map<K, V> {
         if (!Utilities.esPrimo(tamano)) {
             tamano = Utilities.siguientePrimo(tamano);
         }
-        objetos = (Entry[]) new Object[tamano];
+        objetos = (Entry[]) Array.newInstance(Entry.class, tamano);
         INITIAL_CAPACITY = tamano;
         keys = new HashSet<K>();
         entries = new HashSet<Entry>();
@@ -65,7 +66,7 @@ public class TSB_OAHashtable<K, V> implements Map<K, V> {
         int posicion = hashear(key);
         boolean primeraPasada = false;
         while (objetos[posicion] != null) {
-            posicion %= objetos.length;
+            posicion = Math.floorMod(posicion, objetos.length);
             if (objetos[posicion].getKey() == key) {
                 value = objetos[posicion].getValue();
             }
@@ -83,7 +84,7 @@ public class TSB_OAHashtable<K, V> implements Map<K, V> {
         }
         if (containsKey(key)) {
             for (int x = hashear(key); objetos[x] != null; x++) {
-                x %= objetos.length;
+                x = Math.floorMod(x, objetos.length - 1);
                 if (objetos[x].getEstado() == estadoCasillero.cerrado && objetos[x].getKey() == key) {
                     V viejo = objetos[x].getValue();
                     values.remove(viejo);
@@ -97,17 +98,16 @@ public class TSB_OAHashtable<K, V> implements Map<K, V> {
         if (count >= objetos.length * LOAD_FACTOR) {
             rehash();
         }
-
-        for (int x = hashear(key); objetos[x] != null; x++) {
-            x &= objetos.length;
-            if (objetos[x].getEstado() != estadoCasillero.cerrado) {
-                Entry e = new Entry(key, value);
-                keys.add(key);
-                values.add(key);
-                entries.add(e);
-                objetos[x] = e;
-                break;
-            }
+        for (int x = hashear(key); ; x++) {
+            if (objetos[x] != null && objetos[x].getEstado() != estadoCasillero.cerrado) continue;
+            x = Math.floorMod(x, objetos.length - 1);
+            Entry e = new Entry(key, value);
+            keys.add(key);
+            values.add(value);
+            entries.add(e);
+            objetos[x] = e;
+            count++;
+            break;
         }
         return null;
     }
@@ -118,13 +118,14 @@ public class TSB_OAHashtable<K, V> implements Map<K, V> {
         }
         if (containsKey(key)) {
             for (int x = hashear(key); objetos[x] != null; x++) {
-                x %= objetos.length;
+                x = Math.floorMod(x, objetos.length - 1);
                 if (objetos[x].getEstado() == estadoCasillero.cerrado && objetos[x].getKey() == key) {
                     V viejo = objetos[x].getValue();
                     values.remove(viejo);
                     keys.remove(key);
                     entries.remove(objetos[x]);
                     objetos[x].setEstado(estadoCasillero.tumba);
+                    count--;
                     return viejo;
                 }
             }
@@ -159,11 +160,9 @@ public class TSB_OAHashtable<K, V> implements Map<K, V> {
     }
 
     public void rehash() {
-        Entry[] temp = (Entry[]) new Object[Utilities.siguientePrimo(objetos.length)];
+        Entry[] temp = (Entry[]) Array.newInstance(Entry.class, Utilities.siguientePrimo(objetos.length));
         for (Entry objeto : objetos) {
-            if (objeto.getEstado() == estadoCasillero.tumba) {
-                continue;
-            }
+            if (objeto == null || objeto.getEstado() == estadoCasillero.tumba) continue;
             int hashNuevo = objeto.getKey().hashCode() % temp.length;
             temp[hashNuevo] = objeto;
         }
@@ -180,7 +179,7 @@ public class TSB_OAHashtable<K, V> implements Map<K, V> {
     }
 
     //Clase para representar los pares de objetos.
-    private class Entry implements Map.Entry<K, V> {
+    private final class Entry implements Map.Entry<K, V> {
 
         private K key;
         private V value;
