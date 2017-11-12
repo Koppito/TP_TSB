@@ -1,4 +1,4 @@
-package desarrollo.tsb.maven.main;
+package main.java.desarrollo.tsb.maven.main;
 
 /**
  * Una clase usada para grabar objetos de la clase TSBSimpleList 

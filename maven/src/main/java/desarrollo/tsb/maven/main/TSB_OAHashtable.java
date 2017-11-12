@@ -1,4 +1,4 @@
-package desarrollo.tsb.maven.main;
+package main.java.desarrollo.tsb.maven.main;
 
 import java.lang.reflect.Array;
 import java.util.*;
@@ -16,7 +16,7 @@ public class TSB_OAHashtable<K, V> implements Map<K, V> {
     private Entry[] objetos;
     private int count = 0;
     private int INITIAL_CAPACITY;
-    private static final double LOAD_FACTOR = 0.5;
+    private static final double LOAD_FACTOR = 0.75;
 
     private HashSet keys;
     private HashSet entries;
@@ -66,19 +66,13 @@ public class TSB_OAHashtable<K, V> implements Map<K, V> {
             throw new NullPointerException("Key a buscar es nula");
         }
         V value = null;
-        boolean primeraPasada = false;
-        for (int x = hashear(key); objetos[x] != null; x++) {
+        for (int x = hashear(key); objetos[x %= objetos.length] != null; x++) {
             if (objetos[x].getEstado() == estadoCasillero.tumba) {
                 break;
             }
-            x %= objetos.length;
             if (objetos[x].getKey().equals(key)) {
                 value = objetos[x].getValue();
             }
-            if (primeraPasada && x == hashear(key)) {
-                break;
-            }
-            primeraPasada = true;
         }
         return value;
     }
@@ -87,10 +81,13 @@ public class TSB_OAHashtable<K, V> implements Map<K, V> {
         if (key == null || value == null) {
             throw new IllegalArgumentException("Error en los argumentos");
         }
+        if (count >= (objetos.length * LOAD_FACTOR)) {
+            rehash();
+        }
+
         if (containsKey(key)) {
-            for (int x = hashear(key); objetos[x] != null; x++) {
-                x %= objetos.length;
-                if (objetos[x].getEstado() == estadoCasillero.cerrado && objetos[x].getKey() == key) {
+            for (int x = hashear(key); objetos[x %= objetos.length] != null; x++) {
+                if (objetos[x].getEstado() == estadoCasillero.cerrado && objetos[x].getKey().equals(key)) {
                     V viejo = objetos[x].getValue();
                     values.remove(viejo);
                     objetos[x].setValue(value);
@@ -98,23 +95,19 @@ public class TSB_OAHashtable<K, V> implements Map<K, V> {
                     return viejo;
                 }
             }
-        }
-
-        if (count >= objetos.length * LOAD_FACTOR) {
-            rehash();
-            return put(key, value);
-        }
-
-        for (int x = hashear(key); ; x++) {
-            if (objetos[x] != null && objetos[x].getEstado() != estadoCasillero.cerrado) continue;
-            x %= objetos.length;
-            Entry e = new Entry(key, value);
-            keys.add(key);
-            values.add(value);
-            entries.add(e);
-            objetos[x] = e;
-            count++;
-            break;
+        } else {
+            for (int x = hashear(key); ; x++) {
+                x %= objetos.length;
+                if (objetos[x] == null || objetos[x].getEstado() == estadoCasillero.tumba) {
+                    Entry e = new Entry(key, value);
+                    keys.add(key);
+                    values.add(value);
+                    entries.add(e);
+                    objetos[x] = e;
+                    count++;
+                    break;
+                }
+            }
         }
         return null;
     }
@@ -167,8 +160,9 @@ public class TSB_OAHashtable<K, V> implements Map<K, V> {
     }
 
     public void rehash() {
+        count = 0;
         Entry[] arrayViejo = objetos;
-        objetos = (Entry[]) Array.newInstance(Entry.class, Utilities.siguientePrimo(objetos.length));
+        objetos = (Entry[]) Array.newInstance(Entry.class, Utilities.siguientePrimo(objetos.length) * 2);
         for (Entry objeto : arrayViejo) {
             if (objeto == null || objeto.getEstado() == estadoCasillero.tumba) continue;
             put(objeto.key, objeto.value);
@@ -181,7 +175,8 @@ public class TSB_OAHashtable<K, V> implements Map<K, V> {
 
     //Funciones agregadas por nosotros
     private int hashear(Object o) {
-        return o.hashCode() % objetos.length;
+        // 0x7fffffff obliga que el hashcode sea positivo
+        return (o.hashCode() & 0x7fffffff) % objetos.length;
     }
 
     //Clase para representar los pares de objetos.

@@ -1,4 +1,4 @@
-package desarrollo.tsb.maven.main;
+package main.java.desarrollo.tsb.maven.main;
 
 /**
  * Representa situaciones de error en IO en la serializacion de objetos de la clase 

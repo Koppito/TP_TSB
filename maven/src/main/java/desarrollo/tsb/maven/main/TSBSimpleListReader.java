@@ -1,4 +1,4 @@
-package desarrollo.tsb.maven.main;
+package main.java.desarrollo.tsb.maven.main;
 
 /**
  *  Clase que permite recuperar desde un archivo externo un objeto de
@@ -7,7 +7,10 @@ package desarrollo.tsb.maven.main;
  *  @version Septiembre de 2017.
  */
 import java.io.*;
-public class TSBSimpleListReader 
+import java.util.Random;
+
+@SuppressWarnings("unchecked")
+public class TSBSimpleListReader
 {
       private String arch = "lista.dat";
     
@@ -38,9 +41,9 @@ public class TSBSimpleListReader
       public TSB_OAHashtable read() throws TSBSimpleListIOException
       {
     	  TSB_OAHashtable sl = null;
-           
            try
            {
+
                  FileInputStream istream = new FileInputStream(arch);
                  ObjectInputStream p = new ObjectInputStream(istream);
           

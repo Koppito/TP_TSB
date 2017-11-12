@@ -1,5 +1,4 @@
-package desarrollo.tsb.maven.main;
-
+package main.java.desarrollo.tsb.maven.main;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
@@ -17,7 +16,7 @@ public class Main extends Application {
 	//@Override
 	public void start(Stage stage) throws Exception 
 	{
-        Parent root = FXMLLoader.load(getClass().getResource("/main/FXMLDocument.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/main/java/desarrollo/tsb/maven/main/FXMLDocument.fxml"));
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setTitle("TP TSB");
@@ -27,8 +26,7 @@ public class Main extends Application {
 	
     public static void main(String[] args) {
         launch(args);/*
-        TSB_OAHashtable tabla = new TSB_OAHashtable<Integer, String>(2);
-        TSB_OAHashtable tabla2 = new TSB_OAHashtable<Integer, String>(2);
+        TSB_OAHashtable tabla = new TSB_OAHashtable<Integer, String>(20000000);
         tabla.put(23, "Hola");
         tabla.put(45, "HEYY");
         tabla.put(47, "Pepe");
@@ -44,7 +42,7 @@ public class Main extends Application {
         tabla.put(233, "Hola");
         tabla.put(945, "HEYY");
         tabla.put(487, "Pepe");
-
+/*
         Set<Integer> keys = tabla.keySet();
         for (Integer i : keys) {
             System.out.println("Key: " + i);
@@ -64,9 +62,6 @@ public class Main extends Application {
         System.out.println(tabla.get(23));
         System.out.println(tabla.containsKey(23));
         System.out.println(tabla.remove(23));
-        System.out.println(tabla.containsKey(23));
-
-        tabla2.putAll(tabla);
-        System.out.println("Contiene: " + tabla2.containsKey(45));*/
+        System.out.println(tabla.containsKey(23));*/
     }
 }
