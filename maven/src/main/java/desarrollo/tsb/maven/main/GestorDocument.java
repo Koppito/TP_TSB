@@ -26,7 +26,7 @@ public class GestorDocument {
     private Archivo archivo;
 
     private GestorDocument() {
-        hashTable = new TSB_OAHashtable<String, Integer>(2000);
+        hashTable = new TSB_OAHashtable<String, Integer>(200000);
         archivo = new Archivo();
     }
 
@@ -48,7 +48,6 @@ public class GestorDocument {
     }
 
     public String contarRepeticiones() throws FileNotFoundException {
-        StringBuilder br = new StringBuilder();
         try {
             FileReader fr = new FileReader(archivo.getFile());
             BufferedReader buff = new BufferedReader(fr);
@@ -67,7 +66,18 @@ public class GestorDocument {
                     }
                 }
             }
-            Set<String> entries = hashTable.keySet();
+
+        }
+        catch(Exception e) {
+            throw e;
+        }
+        return entriesToString();
+    }
+
+    public String entriesToString() {
+        StringBuilder br = new StringBuilder();
+        Set<String> entries = hashTable.keySet();
+        if (hashTable.size() > 0) {
             for (String e : entries) {
                 if (hashTable.containsKey(e)) {
                     int value = (int) hashTable.get(e);
@@ -75,11 +85,19 @@ public class GestorDocument {
                 }
             }
         }
-        catch(Exception e) {
+        return br.toString();
+    }
+
+    //Metodo que se ejecuta una vez que la stage se comienza a cerrar
+    public void onClosingWindow() throws Exception {
+        try {
+            TSBSimpleListWriter writer = new TSBSimpleListWriter("maven/resources/hashTable.dat");
+            writer.write(hashTable);
+        }
+        catch (TSBSimpleListIOException e) {
             throw e;
         }
-        System.out.println(hashTable.size());
-        return br.toString();
+
     }
 
 }

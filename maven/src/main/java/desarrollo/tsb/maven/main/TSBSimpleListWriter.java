@@ -8,6 +8,8 @@ package main.java.desarrollo.tsb.maven.main;
  * @version Septiembre de 2017.
  */
 import java.io.*;
+import java.util.Hashtable;
+
 public class TSBSimpleListWriter
 {
       // nombre del archivo serializado...
@@ -33,24 +35,25 @@ public class TSBSimpleListWriter
       
       /**
        * Graba la lista tomada como parametro.
-       * @param sl la lista a serializar.
+       * @param ht la lista a serializar.
        * @throws TSBSimpleListIOException si se encuentra un error de IO.
        */
       public void write (TSB_OAHashtable ht) throws TSBSimpleListIOException
       {
            try
            {
-             FileOutputStream ostream = new FileOutputStream(arch);
-             ObjectOutputStream p = new ObjectOutputStream(ostream);
-      
-             p.writeObject(ht);
-      
-             p.flush(); 
-             ostream.close();
+                FileOutputStream ostream = new FileOutputStream(arch);
+                ObjectOutputStream p = new ObjectOutputStream(ostream);
+
+                p.writeObject(ht);
+
+                p.flush();
+                ostream.close();
            }
            catch ( Exception e )
            {
-             throw new TSBSimpleListIOException("No se pudo grabar la lista...");
+                e.printStackTrace();
+                throw new TSBSimpleListIOException("No se pudo grabar la lista: " + e.getMessage());
            }
       }
 }

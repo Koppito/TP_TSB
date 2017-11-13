@@ -1,5 +1,6 @@
 package main.java.desarrollo.tsb.maven.main;
 
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.*;
 import java.util.function.BiConsumer;
@@ -7,7 +8,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 @SuppressWarnings("unchecked")
-public class TSB_OAHashtable<K, V> implements Map<K, V> {
+public class TSB_OAHashtable<K, V> implements Map<K, V>, Serializable {
 
 	private enum estadoCasillero {
         cerrado,
@@ -176,11 +177,14 @@ public class TSB_OAHashtable<K, V> implements Map<K, V> {
     //Funciones agregadas por nosotros
     private int hashear(Object o) {
         // 0x7fffffff obliga que el hashcode sea positivo
+        if (o == null) {
+            throw new NullPointerException();
+        }
         return (o.hashCode() & 0x7fffffff) % objetos.length;
     }
 
     //Clase para representar los pares de objetos.
-    private final class Entry implements Map.Entry<K, V> {
+    private final class Entry implements Map.Entry<K, V>, Serializable {
 
         private K key;
         private V value;
@@ -243,7 +247,7 @@ public class TSB_OAHashtable<K, V> implements Map<K, V> {
         }
     }
 
-    private final class KeySet extends AbstractSet<K> {
+    private final class KeySet extends AbstractSet<K> implements Serializable {
 
         private HashSet keys = new HashSet<K>();
 
@@ -269,7 +273,7 @@ public class TSB_OAHashtable<K, V> implements Map<K, V> {
 
     }
 
-    private final class ValueCollection extends AbstractCollection<V> {
+    private final class ValueCollection extends AbstractCollection<V> implements Serializable {
 
         private LinkedList values = new LinkedList<V>();
 
@@ -295,7 +299,7 @@ public class TSB_OAHashtable<K, V> implements Map<K, V> {
 
     }
 
-    private final class EntrySet extends AbstractSet<Map.Entry<K, V>> {
+    private final class EntrySet extends AbstractSet<Map.Entry<K, V>> implements Serializable {
 
         private HashSet entries = new HashSet<Map.Entry<K, V>>();
 

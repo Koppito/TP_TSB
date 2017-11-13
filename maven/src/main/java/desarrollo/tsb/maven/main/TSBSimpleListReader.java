@@ -43,20 +43,19 @@ public class TSBSimpleListReader
     	  TSB_OAHashtable sl = null;
            try
            {
+                FileInputStream istream = new FileInputStream(arch);
+                ObjectInputStream p = new ObjectInputStream(istream);
 
-                 FileInputStream istream = new FileInputStream(arch);
-                 ObjectInputStream p = new ObjectInputStream(istream);
-          
-                 sl = ( TSB_OAHashtable ) p.readObject();
-                 
-                 p.close();
-                 istream.close();
+                sl = ( TSB_OAHashtable ) p.readObject();
+
+                p.close();
+                istream.close();
            }
            catch (Exception e)
            {
-             throw new TSBSimpleListIOException("No se pudo recuperar la lista");
+                e.printStackTrace();
+                throw new TSBSimpleListIOException("No se pudo recuperar la lista");
            }
-           
            return sl;
        }
 }

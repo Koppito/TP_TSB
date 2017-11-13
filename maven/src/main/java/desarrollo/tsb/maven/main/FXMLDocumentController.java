@@ -44,7 +44,18 @@ public class FXMLDocumentController implements Initializable {
     
     public void initialize(URL url, ResourceBundle rb) {
         //Acá cuando se inicializa se carga la hashtable desde el archivo
-
+        try {
+            File archivoHashTable = new File("maven/resources/hashTable.dat");
+            if (archivoHashTable.exists() && !archivoHashTable.isDirectory()) {
+                txtArchivo.setText("Cargando hashtable...");
+                TSBSimpleListReader reader = new TSBSimpleListReader(archivoHashTable.getAbsolutePath());
+                gestor.setHashTable(reader.read());
+                txtArchivo.setText(gestor.entriesToString());
+            }
+        }
+        catch (Exception e) {
+            System.err.println("Error en la lectura del archivo de la hashtable!");
+        }
     }
 
     @FXML
@@ -61,11 +72,10 @@ public class FXMLDocumentController implements Initializable {
             try {
                 lblArchivo.setText(file.getAbsolutePath());
                 gestor.getArchivo().setFile(file);
-                TSBSimpleListReader reader = new TSBSimpleListReader(gestor.getArchivo().getFile().getAbsolutePath());
                 txtArchivo.setText(gestor.contarRepeticiones());
             }
             catch (Exception e) {
-                throw e;
+                e.printStackTrace();
             }
         }
     }
@@ -88,5 +98,5 @@ public class FXMLDocumentController implements Initializable {
         txtPalabra.setText("");
         lblResultado.setText("");
     }
-    
+
 }
