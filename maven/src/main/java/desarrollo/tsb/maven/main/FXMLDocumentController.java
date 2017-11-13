@@ -44,11 +44,11 @@ public class FXMLDocumentController implements Initializable {
     
     public void initialize(URL url, ResourceBundle rb) {
         //Acá cuando se inicializa se carga la hashtable desde el archivo
+
     }
 
     @FXML
     private void btnCargarClick(ActionEvent event) throws Exception {
-        gestor.limpiarTabla();
         txtArchivo.setText("");
         FileChooser fc = new FileChooser();
         File resourcesDirectory = new File("maven/resources/");
@@ -84,7 +84,6 @@ public class FXMLDocumentController implements Initializable {
 
     @FXML
     private void btnLimpiarClick(ActionEvent event) {
-        gestor.limpiarTabla();
         txtArchivo.setText("");
         txtPalabra.setText("");
         lblResultado.setText("");

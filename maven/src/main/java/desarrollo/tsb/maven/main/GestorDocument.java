@@ -7,8 +7,6 @@ package main.java.desarrollo.tsb.maven.main;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
-import java.nio.Buffer;
 import java.util.*;
 
 @SuppressWarnings("unchecked")
@@ -23,8 +21,6 @@ public class GestorDocument {
         return instance;
     }
     //endregion
-
-    Hashtable gt;
 
     private TSB_OAHashtable hashTable;
     private Archivo archivo;
@@ -78,16 +74,12 @@ public class GestorDocument {
                     br.append("Palabra: " + e + " Repeticiones: " + value + "\n");
                 }
             }
-            System.out.println(hashTable.size());
         }
         catch(Exception e) {
             throw e;
         }
+        System.out.println(hashTable.size());
         return br.toString();
-    }
-
-    public void limpiarTabla() {
-        hashTable.clear();
     }
 
 }

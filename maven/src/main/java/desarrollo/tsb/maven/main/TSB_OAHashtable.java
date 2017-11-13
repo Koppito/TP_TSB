@@ -18,9 +18,9 @@ public class TSB_OAHashtable<K, V> implements Map<K, V> {
     private int INITIAL_CAPACITY;
     private static final double LOAD_FACTOR = 0.75;
 
-    private HashSet keys;
-    private HashSet entries;
-    private LinkedList values;
+    private KeySet keys;
+    private EntrySet entries;
+    private ValueCollection values;
 
     public TSB_OAHashtable(int tamano) {
         if (!Utilities.esPrimo(tamano)) {
@@ -28,9 +28,9 @@ public class TSB_OAHashtable<K, V> implements Map<K, V> {
         }
         objetos = (Entry[]) Array.newInstance(Entry.class, tamano);
         INITIAL_CAPACITY = tamano;
-        keys = new HashSet<K>();
-        entries = new HashSet<Entry>();
-        values = new LinkedList<V>();
+        keys = new KeySet();
+        entries = new EntrySet();
+        values = new ValueCollection();
     }
 
     public int size() {
@@ -142,9 +142,9 @@ public class TSB_OAHashtable<K, V> implements Map<K, V> {
     public void clear() {
         count = 0;
         objetos = (Entry[]) Array.newInstance(Entry.class, INITIAL_CAPACITY);
-        keys = new HashSet<K>();
-        entries = new HashSet<Entry>();
-        values = new LinkedList<V>();
+        keys = new KeySet();
+        entries = new EntrySet();
+        values = new ValueCollection();
     }
 
     public Set<K> keySet() {
@@ -243,6 +243,81 @@ public class TSB_OAHashtable<K, V> implements Map<K, V> {
         }
     }
 
+    private final class KeySet extends AbstractSet<K> {
+
+        private HashSet keys = new HashSet<K>();
+
+        public Iterator<K> iterator() {
+            return keys.iterator();
+        }
+
+        public int size() {
+            return count;
+        }
+
+        public boolean contains(Object o) {
+            return containsKey(o);
+        }
+
+        public boolean add(Object o) {
+            return o != null && keys.add(o);
+        }
+
+        public boolean remove(Object o) {
+            return o != null && keys.remove(o);
+        }
+
+    }
+
+    private final class ValueCollection extends AbstractCollection<V> {
+
+        private LinkedList values = new LinkedList<V>();
+
+        public Iterator<V> iterator() {
+            return values.iterator();
+        }
+
+        public int size() {
+            return count;
+        }
+
+        public boolean contains(Object o) {
+            return containsValue(o);
+        }
+
+        public boolean add(Object o) {
+            return o != null && values.add(o);
+        }
+
+        public boolean remove(Object o) {
+            return o != null && values.remove(o);
+        }
+
+    }
+
+    private final class EntrySet extends AbstractSet<Map.Entry<K, V>> {
+
+        private HashSet entries = new HashSet<Map.Entry<K, V>>();
+
+        public Iterator<Map.Entry<K, V>> iterator() {
+            return entries.iterator();
+        }
+
+        public int size() {
+            return count;
+        }
+
+        public boolean add(Map.Entry<K, V> o) {
+            return o != null && entries.add(o);
+        }
+
+        public boolean remove(Map.Entry<K, V> o) {
+            return o != null && entries.remove(o);
+        }
+
+    }
+
+
 	public V getOrDefault(Object key, V defaultValue) {
 		// TODO Auto-generated method stub
 		return null;
@@ -258,6 +333,7 @@ public class TSB_OAHashtable<K, V> implements Map<K, V> {
 		// TODO Auto-generated method stub
 		
 	}
+
 
 	public V putIfAbsent(K key, V value) {
 		// TODO Auto-generated method stub
